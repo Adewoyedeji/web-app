@@ -97,13 +97,13 @@
 	    <repository>
 	      <id>nexus</id>
 	      <name>ACADA Learning Releases Nexus Repository</name>
-	      <url>http://18.204.19.176:8081/repository/Flight-booking-Release/</url>
+	      <url>http://34.224.213.229:8081/repository/First-Release-Repository/</url>
 	    </repository>
 	    
 	    <snapshotRepository>
 	      <id>nexus</id>
 	      <name>ACADA Learning Snapshot Nexus Repository </name>
-	      <url>http://18.204.19.176:8081/repository/Flight-booking-snapshot/</url>
+	      <url>http://34.224.213.229:8081/repository/First-Snapshot-repository/</url>
 	    </snapshotRepository>
 	    
 	</distributionManagement>
