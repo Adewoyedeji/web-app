@@ -1,0 +1,41 @@
+node(""){
+
+	def MHD = tool name: "Maven3.8.6"
+
+	stage('Gitclone'){
+	sh "echo this is git clone"
+	git 'https://github.com/Adewoyedeji/web-app.git'
+	}
+
+	stage('Build'){
+	sh "echo this is start of build process"
+	sh "${MHD}/bin/mvn package"
+	}
+
+	stage('Code Quality'){
+	sh "echo performing SonarQube test"
+	sh "${MHD}/bin/mvn sonar:sonar"
+	}
+
+	stage('BackupArtifacts'){
+	sh "echo backup to Nexus"
+	sh "${MHD}/bin/mvn deploy"
+	}
+
+	stage('Approval'){
+	sh "echo Approval needed"
+	timeout(time:5, unit:"DAYS"){
+	input message: 'Approval for Production'
+	}
+	}
+
+	stage('DeploytoTomcat'){
+	sh "echo Deploy to tomcat server"
+	deploy adapters: [tomcat9(credentialsId: 'Tomcat-Cred', path: '', url: 'http://34.204.18.181:7000')], contextPath: null, onFailure: false, war: 'target/*war'
+	}
+
+	stage('Slack Notification'){
+	sh "echo Sending notification to slack"
+	slackSend baseUrl: 'http://52.90.83.39:8080/', channel: 'U03M2GCA4KZ', failOnError: true, teamDomain: 'acadalearning', tokenCredentialId: 'Slack-Cred', username: 'Ayodeji'
+	}
+}
